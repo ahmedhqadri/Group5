@@ -18,12 +18,31 @@ public class memberNode extends userNode implements Serializable{
         Suspended = false;
     }
 
+    public memberNode(int membernumber, String membername, String memberstreet,
+                      String membercity, String memberstate, int memberzip){
+        super(membernumber);
+        memberName = membername;
+        memberStreet = memberstreet;
+        memberCity = membercity;
+        memberState = memberstate;
+        memberZip = memberzip;
+        Suspended = false;
+    }
+
     public boolean isSuspended(){
         return Suspended;
     }
 
     public void setSuspended(boolean toSet){
         Suspended = toSet;
+    }
+
+    public String getMemberInfo(){
+        return "Member Name: " + memberName
+                +"\nMember ID: " + getUserNumber()
+                +"\nMember Address:\n" + memberStreet
+                +"\n" + memberCity + ", " + memberState + " " + memberZip
+                +"\nSuspended: " + Suspended;
     }
 
     @Override

@@ -1,9 +1,10 @@
 package GUI;
 
 import javafx.scene.layout.GridPane;
-import javafx.scene.layout.Pane;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
+import userDataStructure.managerNode;
+import userDataStructure.providerNode;
 import userDataStructure.userNode;
 import javafx.animation.KeyFrame;
 import javafx.animation.KeyValue;
@@ -24,13 +25,13 @@ import java.io.Serializable;
 /**
  * Created by Spaghetti on 4/25/2016.
  */
-public class loginPane extends StackPane implements Serializable{
+public class loginPane extends StackPane {
     private TextField managerTextField;
     private TextField providerTextField;
     private String textInField;
     private int whichSide; //0 denotes that the user is trying to log in as a manager;
-                           //1 denotes that the user has yet to select a user type to log in as;
-                           //2 denotes that the user is trying to log in as a provider.
+    //1 denotes that the user has yet to select a user type to log in as;
+    //2 denotes that the user is trying to log in as a provider.
     private Text errorMessage;
 
     public loginPane(){
@@ -75,7 +76,7 @@ public class loginPane extends StackPane implements Serializable{
         loginButton centerToManager = new loginButton(-200, 0, Color.CORNFLOWERBLUE, "Manager", this);
         loginButton centerToProvider = new loginButton(200, 2, Color.ORANGE, "Provider", this);
         GridPane buttonPane = new GridPane(); //establish gridpane so that all buttons are on the same level
-                                              //within the loginpane's stackpane's stack.
+        //within the loginpane's stackpane's stack.
         buttonPane.setAlignment(Pos.CENTER);
         buttonPane.getChildren().addAll(managerToCenter, providerToCenter, centerToManager, centerToProvider);
         getChildren().add(buttonPane);
@@ -93,8 +94,7 @@ public class loginPane extends StackPane implements Serializable{
                             textInField = providerTextField.getText();
                         }
 
-                        //System.out.println(textInField); //TEST
-                        Retrieved = GUIRoot.userStructure.Retrieve(Integer.parseInt(textInField), whichSide);
+                        Retrieved = GUIRoot.getUserStructure().Retrieve(Integer.parseInt(textInField), whichSide);
                         //attempt to retrieve an account node of a manager or provider based on whichside.
 
                         //TEST USER RETRIEVAL
@@ -102,7 +102,12 @@ public class loginPane extends StackPane implements Serializable{
                             getChildren().remove(errorMessage); //ensure that this isn't already added to the GUI.
                             getChildren().add(errorMessage);
                         } else {
-                            System.out.println(textInField + " found.");
+                            if(whichSide == 0) { //manager case
+                                GUIRoot.swapToManagerPane((managerNode)Retrieved);
+                            }
+                            else{ //provider case
+                                GUIRoot.swapToProviderPane((providerNode)Retrieved);
+                            }
                         }
                     } catch (Exception e) {
                         getChildren().remove(errorMessage); //ensure that this object isn't already added.

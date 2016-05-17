@@ -38,7 +38,7 @@ public class userHashTable implements Serializable{
         Insert(new managerNode(123456789));
         Insert(new providerNode(987654321));
         Insert(new managerNode(987654321));
-        Insert(new memberNode(123456789));
+        Insert(new memberNode(123456789, "John Smith", "1111 Test Ave.", "Testland", "OR", 97229));
         Insert(new memberNode(111111111));
     }
 }

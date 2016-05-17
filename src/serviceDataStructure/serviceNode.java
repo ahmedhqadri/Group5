@@ -33,11 +33,11 @@ public class serviceNode implements Serializable{
     public String returnAsString(){
         return
                 "Date logged: " + entryDate.toString()
-                + "\nDate of Service: " + manualDate
-                + "\nProvider: " + Provider.getUserNumber()
-                + "\nMember: " + Member.getUserNumber()
-                + "\nService Code: " + serviceCode
-                + "\nComments: " + Comments;
+                        + "\nDate of Service: " + manualDate
+                        + "\nProvider: " + Provider.getUserNumber()
+                        + "\nMember: " + Member.getUserNumber()
+                        + "\nService Code: " + serviceCode
+                        + "\nComments: " + Comments;
     }
 
     //returns the entirety of the structure as a string to the end of writing reports.
