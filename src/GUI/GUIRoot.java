@@ -3,6 +3,7 @@ package GUI;
 import serviceDataStructure.weekListNode;
 import userDataStructure.managerNode;
 import userDataStructure.providerNode;
+import userDataStructure.serializationObject;
 import userDataStructure.userHashTable;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
@@ -27,7 +28,7 @@ public class GUIRoot implements Serializable{
     private static weekListNode weekStructure; //the linear linear linked list of weeks and services for each week
 
 
-    public GUIRoot(Stage passedStage){
+    public GUIRoot(Stage passedStage, serializationObject data){
         primaryStage = passedStage; //store the passed stage in a variable.
         rootPane = new StackPane(); //initialize a stackpane to store and arrange GUIRoot.GUIRoot elements.
         rootPane.setAlignment(Pos.CENTER);
@@ -47,8 +48,15 @@ public class GUIRoot implements Serializable{
         primaryStage.setFullScreen(false); //ensure that the GUIRoot.GUIRoot is windowed.
         primaryStage.setResizable(false); //keep the GUIRoot.GUIRoot at a constant size for simplicity of element configuration.
 
-        userStructure = new userHashTable();
-        userStructure.Test();
+        if(data == null) {
+            userStructure = new userHashTable();
+            userStructure.Test();
+        }
+        else{
+            userStructure = data.getUserHashTable();
+            weekStructure = data.getWeeksHead();
+            providerpane.setServiceList(data.getServices());
+        }
 
         primaryStage.setScene(GUIScene); //assign the scene to the primary stage object.
         primaryStage.show(); //display the GUIRoot.GUIRoot on the user's computer.
@@ -94,5 +102,14 @@ public class GUIRoot implements Serializable{
     //returns a reference to the provider pane.
     public static providerPane getProviderPane(){
         return providerpane;
+    }
+
+    public serializationObject buildSerializationObject(){
+        serializationObject toReturn = new serializationObject(
+                providerpane.getServiceList(),
+                weekStructure,
+                userStructure
+        );
+        return toReturn;
     }
 }

@@ -49,7 +49,7 @@ public class loginPane extends StackPane {
         managerTextField.setTranslateX(-800);
         managerTextField.setMaxWidth(200);
         managerTextField.setMaxHeight(50);
-        managerTextField.setOnMouseReleased(event2 -> {
+        managerTextField.setOnMouseClicked(event2 -> {
             managerTextField.setText("");
         });
 
@@ -57,7 +57,7 @@ public class loginPane extends StackPane {
         providerTextField.setTranslateX(800);
         providerTextField.setMaxWidth(200);
         providerTextField.setMaxHeight(50);
-        providerTextField.setOnMouseReleased(event2 -> {
+        providerTextField.setOnMouseClicked(event2 -> {
             providerTextField.setText("");
         });
 
@@ -165,7 +165,7 @@ public class loginPane extends StackPane {
             ButtonText.setFont(Font.font("Verdana",12));
             getChildren().add(buttonBackground);
             getChildren().add(ButtonText);
-            buttonBackground.setOnMouseReleased(event1 -> {
+            this.setOnMouseClicked(event1 -> {
                 Parent.setSide(endside);
             });
         }

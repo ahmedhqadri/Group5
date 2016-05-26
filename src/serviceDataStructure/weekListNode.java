@@ -1,8 +1,6 @@
 package serviceDataStructure;
 
 import java.io.Serializable;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.Date;
 
 /**
@@ -12,7 +10,7 @@ public class weekListNode implements Serializable{
     private weekListNode Next; //connection to the next element in the list
     //private DateFormat startDateFormat; //formatting class for date storage
     private Date startDate; //class for date storage
-    private serviceNode serviceHead; //head of service substructure; stores service transactions throughout given week
+    private serviceLogNode serviceHead; //head of service substructure; stores service transactions throughout given week
 
     public weekListNode(){
         Next = null;
@@ -33,7 +31,7 @@ public class weekListNode implements Serializable{
     }
 
     //adds a new service at the head of the service substructure.
-    public void addService(serviceNode toAdd){
+    public void addService(serviceLogNode toAdd){
         toAdd.setNext(serviceHead);
         serviceHead = toAdd;
     }

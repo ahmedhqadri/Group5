@@ -1,11 +1,14 @@
 package GUI;
 
-import com.sun.deploy.util.StringUtils;
 import javafx.geometry.Pos;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
+import javafx.scene.input.KeyCode;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.Priority;
 import javafx.scene.layout.StackPane;
+import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.CycleMethod;
 import javafx.scene.paint.LinearGradient;
@@ -13,7 +16,8 @@ import javafx.scene.paint.Stop;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
-import serviceDataStructure.serviceNode;
+import serviceDataStructure.providerService;
+import serviceDataStructure.serviceLogNode;
 import userDataStructure.memberNode;
 import userDataStructure.providerNode;
 
@@ -36,9 +40,13 @@ public class providerPane extends StackPane {
     private Text [] serviceLabels; //labels for each service field.
     private TextField memberAuthenticationField; //a textfield for authenticating a member ID
     private TextField searchField; //a textfield for searching for service IDs
-    private int selectedField; //index of the service field in which we are currently entering text;
-    //used primarily to allow keyboard-based navigation of the fields.
     private providerButton [] Buttons; //array of buttons associated with this pane. (see private class)
+    private int Mode; //denotes what the user is doing; 0 means l
+    private ScrollPane serviceListPane;
+    private VBox serviceListBox;
+    private providerService currentService; //the current service selected by the user.
+    private providerService [] serviceList; //all possible services that can be logged.
+    private int numberOfServices; //the number of services in the service list.
 
 
     public providerPane(){
@@ -78,6 +86,18 @@ public class providerPane extends StackPane {
             serviceFields[i].setTranslateY(-120 + (i)*70);
             serviceFields[i].setMaxSize(300, 30);
         }
+        serviceFields[0].setOnMouseClicked(event -> {
+            if(serviceFields[0].getText().matches("Please enter date in MM-DD-YYYY format.") ||
+                    serviceFields[0].getText().matches("Service logged!")){
+                serviceFields[0].setText("");
+            }
+        });
+        serviceFields[1].setOnMouseClicked(event -> {
+            if(serviceFields[1].getText().matches("Please enter a valid service code as a 6-digit number.") ||
+                    serviceFields[1].getText().matches("Service ID invalid.") ||
+                    serviceFields[1].getText().matches("Service logged!"))
+                serviceFields[1].setText("");
+        });
         serviceLabels[0].setText("Date of Service: ");
         serviceLabels[1].setText("Service Code: ");
         serviceLabels[2].setText("Comments:");
@@ -91,6 +111,15 @@ public class providerPane extends StackPane {
         memberAuthenticationField.setMaxHeight(40);
         memberAuthenticationField.setTranslateX(150);
         memberAuthenticationField.setTranslateY(-120);
+
+        serviceListPane = new ScrollPane();
+        serviceListPane.setVmax(440);
+        serviceListPane.setPrefSize(350, 250);
+        serviceListPane.setStyle("-fx-font-size: 30px;");
+        serviceListBox = new VBox();
+        serviceListBox.setVgrow(serviceListPane, Priority.ALWAYS);
+        serviceListPane.setContent(serviceListBox);
+
 
         searchField = new TextField();
         searchField.setTranslateY(-100);
@@ -118,9 +147,63 @@ public class providerPane extends StackPane {
         Buttons[5].setTranslateX(0);
         Buttons[5].setTranslateY(200);
 
+        numberOfServices = 5;
+        serviceList = new providerService[5];
+        serviceList[0] = new providerService("Chocolate Massage", 123456, 500.0f, this);
+        serviceList[1] = new providerService("Chocolate Therapy", 111111, 200.0f, this);
+        serviceList[2] = new providerService("Dental Work", 222222, 300.0f, this);
+        serviceList[3] = new providerService("Chocolate Intervention", 333333, 400.0f, this);
+        serviceList[4] = new providerService("Liposuction", 444444, 700.0f, this);
+        for(int i = 0; i < numberOfServices; ++i){
+            serviceListBox.getChildren().add(serviceList[i].buildUIButton());
+        }
+
         buttonPane = new GridPane();
         buttonPane.setAlignment(Pos.CENTER);
         getChildren().add(buttonPane);
+
+        setOnKeyPressed(event -> {
+            if (event.getCode() == KeyCode.ENTER) {
+                if(Mode == 0)
+                    checkMemberValidationInput();
+                else if(Mode == 1){
+                    checkServiceInput();
+                }
+            }
+            if(event.getCode() == KeyCode.TAB){
+                if(Mode == 1 && serviceFields[1].isFocused())
+                    commentField.requestFocus();
+            }
+        });
+
+        commentField.setOnKeyPressed(event ->{
+            if(event.getCode() == KeyCode.ENTER){
+                if(event.isShiftDown()) {
+                    commentField.appendText("\n");
+                    event.consume();
+                }
+                else{
+                    event.consume();
+                    checkServiceInput();
+                }
+            }
+            if(event.getCode() == KeyCode.TAB) {
+                if(event.isShiftDown()) {
+                    commentField.appendText("   ");
+                    event.consume();
+                }
+                else{
+                    event.consume();
+                    serviceFields[0].requestFocus();
+                }
+            }
+        });
+        commentField.setOnMouseClicked(event -> {
+            event.consume();
+            if(commentField.getText().matches("Comments can contain no more than 200 characters.") ||
+                    commentField.getText().matches("Service logged!"))
+                commentField.setText("");
+        });
     }
 
     //a class for adding clickable buttons to this UI pane.
@@ -136,7 +219,7 @@ public class providerPane extends StackPane {
         public providerButton(String buttontext, int buttonFunction, providerPane Parent){
             Rectangle buttonBackground = new Rectangle(150, 60);
             buttonBackground.setFill(Color.CORAL);
-            buttonBackground.setOnMouseReleased(event -> {
+            this.setOnMouseClicked(event -> {
                 if(buttonFunction == 0){
                     Parent.checkMemberValidationInput();
                 }
@@ -176,6 +259,7 @@ public class providerPane extends StackPane {
     }
 
     public void swapToBaseMode(){
+        Mode = 0;
         buttonPane.getChildren().clear();
         buttonPane.getChildren().addAll(Buttons[0], Buttons[1], Buttons[3], Buttons[5]);
         for(int i = 0; i < 3; ++i) {
@@ -189,6 +273,10 @@ public class providerPane extends StackPane {
     }
 
     public void checkMemberValidationInput(){
+        if(!isNumber(memberAuthenticationField.getText()) || memberAuthenticationField.getText().matches("")){
+            memberInformation.setText("Please enter the member's\n 9 digit ID number.");
+            return;
+        }
         currentMember = ((memberNode)
                 GUIRoot.getUserStructure().Retrieve(Integer.parseInt(memberAuthenticationField.getText()), 1));
         //search the user hash table for a member node (indicated by int arg "1") matching the text in the field
@@ -209,6 +297,19 @@ public class providerPane extends StackPane {
             serviceFields[1].setText("Please enter a valid service code as a 6-digit number.");
             valid = false;
         }
+        else {
+            currentService = null;
+            for (int i = 0; i < numberOfServices; ++i) {
+                if (serviceFields[1].getText().matches(serviceList[i].getID())) {
+                    currentService = serviceList[i];
+                    break;
+                }
+            }
+            if (currentService == null) {
+                serviceFields[1].setText("Service ID invalid.");
+                valid = false;
+            }
+        }
         if(commentField.getText().length() > 200) {
             commentField.setText("Comments can contain no more than 200 characters.");
             valid = false;
@@ -218,10 +319,11 @@ public class providerPane extends StackPane {
                 GUIRoot.addNewWeek();
             else if(!GUIRoot.getWeekStructure().isOfCurrentWeek())
                 GUIRoot.addNewWeek();
-            GUIRoot.getWeekStructure().addService(new serviceNode(
+            GUIRoot.getWeekStructure().addService(new serviceLogNode(
                     currentProvider, currentMember, serviceFields[0].getText(),
-                    Integer.parseInt(serviceFields[1].getText()), commentField.getText()
+                    currentService, commentField.getText()
             ));
+            currentService = null;
             serviceFields[0].setText("Service logged!");
             serviceFields[1].setText("Service logged!");
             commentField.setText("Service logged!");
@@ -250,20 +352,29 @@ public class providerPane extends StackPane {
     }
 
     public void swapToServiceLookupMode(){
-        buttonPane.getChildren().clear();
-        buttonPane.getChildren().add(Buttons[4]);
-        Buttons[4].setTranslateX(0);
-        Buttons[4].setTranslateY(200);
-        for(int i = 0; i < 3; ++i) {
-            this.getChildren().remove(serviceLabels[i]);
-            if(i != 2)
-                this.getChildren().remove(serviceFields[i]);
+        Mode = 2;
+        if (currentMember == null)
+            memberInformation.setText("You must validate a ChocAn member \nbefore looking up services.");
+        else {
+            buttonPane.getChildren().clear();
+            buttonPane.getChildren().add(Buttons[4]);
+            Buttons[4].setTranslateX(0);
+            Buttons[4].setTranslateY(200);
+            for (int i = 0; i < 3; ++i) {
+                this.getChildren().remove(serviceLabels[i]);
+                if (i != 2)
+                    this.getChildren().remove(serviceFields[i]);
+            }
+            this.getChildren().remove(commentField);
+            this.getChildren().remove(memberAuthenticationField);
+            this.getChildren().remove(memberInformation);
+            //this.getChildren().add(searchField);
+            buttonPane.getChildren().add(serviceListPane);
         }
-        this.getChildren().remove(commentField);
-        this.getChildren().add(searchField);
     }
 
     public void swapToServiceLoggingMode() {
+        Mode = 1;
         if (currentMember == null) {
             memberInformation.setText("You must validate a ChocAn member \nbefore logging services.");
         } else {
@@ -278,11 +389,25 @@ public class providerPane extends StackPane {
                 }
                 this.getChildren().add(serviceLabels[i]);
             }
+            if(currentService != null){
+                serviceFields[1].setText(currentService.getID());
+            }
             this.getChildren().add(commentField);
             commentField.setText("");
             this.getChildren().remove(memberAuthenticationField);
             this.getChildren().remove(memberInformation);
-            selectedField = 0; //start the selected field at 0.
         }
+    }
+
+    public void setCurrentService(providerService currentservice){
+        currentService = currentservice;
+    }
+
+    public providerService [] getServiceList(){
+        return serviceList;
+    }
+
+    public void setServiceList(providerService [] toSet){
+        serviceList = toSet;
     }
 }

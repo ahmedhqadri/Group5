@@ -23,7 +23,7 @@ public class managerPane extends StackPane implements Serializable{
         public managerButton(String buttontext, int buttonFunction, managerPane Parent){
             Rectangle buttonBackground = new Rectangle(100, 100);
             buttonBackground.setFill(Color.CORNFLOWERBLUE);
-            buttonBackground.setOnMouseReleased(event -> {
+            this.setOnMouseClicked(event -> {
 
             });
             getChildren().add(buttonBackground);
