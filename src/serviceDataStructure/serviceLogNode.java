@@ -28,6 +28,7 @@ public class serviceLogNode implements Serializable{
         Comments = comments;
     }
 
+
     //returns data in this node as an easily-readable string.
     public String returnAsString(){
         return
@@ -46,6 +47,10 @@ public class serviceLogNode implements Serializable{
             return returnAsString();
         return returnAsString() + "\n\n" + Next.returnAsString();
     }
+
+
+
+
 
     //sets the value of the next reference. Most other methods for altering or reading
     //this data structure are unnecessary, as it will be accessed mostly via references

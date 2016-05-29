@@ -2,6 +2,7 @@ package serviceDataStructure;
 
 import userDataStructure.memberNode;
 import userDataStructure.providerNode;
+import userDataStructure.userNode;
 
 import java.io.Serializable;
 
@@ -10,35 +11,56 @@ import java.io.Serializable;
  */
 public class servicesInfoNode implements Serializable {
 
+
     private servicesInfoNode Next;
-    private providerNode Provider;
-    private memberNode Member;
-    private providerService Service;
+    private serviceLogNode Head;
+    private userNode Data;
 
     public servicesInfoNode(){
         Next = null;
+        Head = null;
     }
 
-    public servicesInfoNode(memberNode member, providerNode provider,
-                            providerService service){
-        this.Member = member;
-        this.Provider = provider;
-        this.Service.setID(Integer.parseInt(service.getID()));
-        this.Service.setName(service.getName());
-        this.Service.setCost(Integer.parseInt(service.getCost()));
-        Next = null;
+    public servicesInfoNode(serviceLogNode head, userNode data) {
+        Head = head;
+        Data = data;
     }
 
+    public servicesInfoNode getNext() {
+        return Next;
+    }
 
-    /*public serviceDataStructure.servicesInfoNode(providerNode Provider, memberNode Member,
-                             providerService Service){
-        this.Provider = Provider;
-        this.Member = Member;
-        Next = null;
-    }*/
-
-
-    public void setNext(servicesInfoNode next){
+    public void setNext(servicesInfoNode next) {
         Next = next;
     }
+
+    public serviceLogNode getRecords() {
+        return Head;
+    }
+
+    public void setRecords(serviceLogNode head) {
+        head.setNext(Head);
+        Head = head;
+    }
+
+    public userNode getData() {
+        return Data;
+    }
+
+    public void setData(userNode data) {
+        Data = data;
+    }
+
+    public boolean retrieve(userNode data){
+        //to distinguse "data" is the same class as "Data"
+        if(Data.getUserCategory() == data.getUserCategory()){
+            //check their UserNumber, if it is same, return true.
+            if(Data.getUserNumber() == data.getUserNumber()) {
+                return true;
+            }
+            else{return false;}
+        }
+        else{return false;}
+    }
+
 }
