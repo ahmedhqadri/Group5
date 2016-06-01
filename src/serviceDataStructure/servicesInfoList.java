@@ -11,7 +11,7 @@ public class servicesInfoList implements Serializable {
 
     private servicesInfoNode head;
 
-    public void AddNode(providerService log) {
+    public void AddNode(serviceLogNode log) {
 
         if(head == null){
             head = new servicesInfoNode(log);

@@ -1,5 +1,8 @@
 package userDataStructure;
 
+import serviceDataStructure.serviceLogNode;
+import serviceDataStructure.servicesInfoList;
+
 import java.io.Serializable;
 
 /**
@@ -12,6 +15,7 @@ public class providerNode extends userNode implements Serializable{
     private String providerState; //the provider's state; 2 letters
     private String providerZip; //the provider's street; 5 digit integer
     private int totalConsultations; //the provider's total consultations over all time; 3 digit integer
+    private servicesInfoList Head;
 
     public providerNode(int providerNumber){
         super(providerNumber);
@@ -26,6 +30,10 @@ public class providerNode extends userNode implements Serializable{
         providerState = providerstate;
         providerZip = providerzip;
         totalConsultations = 0;
+    }
+
+    public void addService(serviceLogNode toInsert){
+        Head.AddNode(toInsert);
     }
 
     public void setName(String toName){

@@ -1,5 +1,8 @@
 package userDataStructure;
 
+import serviceDataStructure.serviceLogNode;
+import serviceDataStructure.servicesInfoList;
+
 import java.io.Serializable;
 
 /**
@@ -12,6 +15,7 @@ public class memberNode extends userNode implements Serializable{
     private String memberState; //the member's state; 2 letters
     private String memberZip; //the member's street; 5 integer digit string
     private boolean Suspended; //whether or not the member has been suspended by a manager
+    private servicesInfoList Head;
 
     public memberNode(int memberNumber){
         super(memberNumber);
@@ -28,6 +32,11 @@ public class memberNode extends userNode implements Serializable{
         memberZip = memberzip;
         Suspended = false;
     }
+
+    public void addService(serviceLogNode toInsert){
+        Head.AddNode(toInsert);
+    }
+
 
     public void setName(String toName){
         memberName = toName;

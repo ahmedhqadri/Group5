@@ -13,14 +13,14 @@ public class servicesInfoNode implements Serializable {
 
 
     private servicesInfoNode Next;
-    private providerService Head;
+    private serviceLogNode Head;
 
     public servicesInfoNode(){
         Next = null;
         Head = null;
     }
 
-    public servicesInfoNode(providerService head) {
+    public servicesInfoNode(serviceLogNode head) {
         Head = head;
     }
 
@@ -32,15 +32,15 @@ public class servicesInfoNode implements Serializable {
         Next = next;
     }
 
-    public providerService getRecords() {
+    public serviceLogNode getRecords() {
         return Head;
     }
 
-    public providerService getData() {
+    public serviceLogNode getData() {
         return Head;
     }
 
-    public void setData(providerService data) {
+    public void setData(serviceLogNode data) {
         Head = data;
     }
 }
