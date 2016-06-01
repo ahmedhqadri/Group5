@@ -13,17 +13,15 @@ public class servicesInfoNode implements Serializable {
 
 
     private servicesInfoNode Next;
-    private serviceLogNode Head;
-    private userNode Data;
+    private providerService Head;
 
     public servicesInfoNode(){
         Next = null;
         Head = null;
     }
 
-    public servicesInfoNode(serviceLogNode head, userNode data) {
+    public servicesInfoNode(providerService head) {
         Head = head;
-        Data = data;
     }
 
     public servicesInfoNode getNext() {
@@ -34,33 +32,15 @@ public class servicesInfoNode implements Serializable {
         Next = next;
     }
 
-    public serviceLogNode getRecords() {
+    public providerService getRecords() {
         return Head;
     }
 
-    public void setRecords(serviceLogNode head) {
-        head.setNext(Head);
-        Head = head;
+    public providerService getData() {
+        return Head;
     }
 
-    public userNode getData() {
-        return Data;
+    public void setData(providerService data) {
+        Head = data;
     }
-
-    public void setData(userNode data) {
-        Data = data;
-    }
-
-    public boolean retrieve(userNode data){
-        //to distinguse "data" is the same class as "Data"
-        if(Data.getUserCategory() == data.getUserCategory()){
-            //check their UserNumber, if it is same, return true.
-            if(Data.getUserNumber() == data.getUserNumber()) {
-                return true;
-            }
-            else{return false;}
-        }
-        else{return false;}
-    }
-
 }

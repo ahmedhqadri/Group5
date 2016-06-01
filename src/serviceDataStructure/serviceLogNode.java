@@ -26,6 +26,8 @@ public class serviceLogNode implements Serializable{
         entryDate = new Date();
         Service = service;
         Comments = comments;
+        Member.addService(service);
+        Provider.addService(service);
     }
 
 
