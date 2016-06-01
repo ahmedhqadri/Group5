@@ -1,5 +1,9 @@
 package userDataStructure;
 
+import serviceDataStructure.providerService;
+import serviceDataStructure.serviceLogNode;
+import serviceDataStructure.servicesInfoList;
+
 import java.io.Serializable;
 
 /**
@@ -8,6 +12,7 @@ import java.io.Serializable;
 public abstract class userNode implements Serializable{
     private userNode Next; //reference to the next node in the LLL
     private int userNumber; //the user's ID number.
+    private servicesInfoList Head;
 
     public userNode(){
         Next = null;
@@ -37,6 +42,10 @@ public abstract class userNode implements Serializable{
         else{
             return Next.Retrieve(toRetrieve, usercategory);
         }
+    }
+
+    public void addService(providerService toInsert){
+        Head.AddNode(toInsert);
     }
 
     public userNode Remove(int toRemove, int usercategory){

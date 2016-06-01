@@ -1,5 +1,8 @@
 package userDataStructure;
 
+import serviceDataStructure.serviceLogNode;
+import serviceDataStructure.servicesInfoList;
+
 import java.io.Serializable;
 
 /**
