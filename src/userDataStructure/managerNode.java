@@ -15,4 +15,9 @@ public class managerNode extends userNode implements Serializable{
     public int getUserCategory() { //returns the user's category as an int.
         return 0;
     }
+
+    @Override
+    public String returnInfo(){
+        return getUserNumber() + "";
+    }
 }

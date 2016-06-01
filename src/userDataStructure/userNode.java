@@ -50,4 +50,6 @@ public abstract class userNode implements Serializable{
     }
 
     public abstract int getUserCategory(); //returns this user's category; 0 for manager, 1 for member, 2 for provider.
+
+    public abstract String returnInfo(); //return a nicely-formatted string representing this
 }

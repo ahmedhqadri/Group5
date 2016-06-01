@@ -283,7 +283,7 @@ public class providerPane extends StackPane {
         if(currentMember == null)
             memberInformation.setText("Member not found.");
         else
-            memberInformation.setText(currentMember.getMemberInfo());
+            memberInformation.setText(currentMember.returnInfo());
     }
 
     public void checkServiceInput(){
