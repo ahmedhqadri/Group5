@@ -37,6 +37,12 @@ public class userHashTable implements Serializable{
         }
     }
 
+    public static void Remove(int toRemove, int category){
+        int hashedElement = toRemove%Size;
+        if(Users[hashedElement] != null)
+           Users[hashedElement] = Users[hashedElement].Remove(toRemove, category);
+    }
+
     public void Test(){
         Insert(new managerNode(123456789));
         Insert(new providerNode(987654321));

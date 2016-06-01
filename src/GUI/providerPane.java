@@ -39,7 +39,6 @@ public class providerPane extends StackPane {
     private TextArea commentField; //multi-row text field for inputting comments regarding a service
     private Text [] serviceLabels; //labels for each service field.
     private TextField memberAuthenticationField; //a textfield for authenticating a member ID
-    private TextField searchField; //a textfield for searching for service IDs
     private providerButton [] Buttons; //array of buttons associated with this pane. (see private class)
     private int Mode; //denotes what the user is doing; 0 means l
     private ScrollPane serviceListPane;
@@ -120,9 +119,6 @@ public class providerPane extends StackPane {
         serviceListBox.setVgrow(serviceListPane, Priority.ALWAYS);
         serviceListPane.setContent(serviceListBox);
 
-
-        searchField = new TextField();
-        searchField.setTranslateY(-100);
         providerNumberHeading = new Text();
         providerNumberHeading.setTranslateY(-200);
         providerNumberHeading.setFont(Font.font("Verdana", 24));

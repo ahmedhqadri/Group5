@@ -74,6 +74,7 @@ public class GUIRoot implements Serializable{
         rootPane.getChildren().removeAll(userTypeSelectionPane, managerpane, providerpane);
         //ensure that no extant panes are left on the root pane.
         rootPane.getChildren().add(managerpane);
+        managerpane.Login(tologin);
     }
 
     //swaps to the provider pane.
