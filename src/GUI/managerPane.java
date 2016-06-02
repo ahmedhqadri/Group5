@@ -56,24 +56,59 @@ public class managerPane extends StackPane implements Serializable{
         userInformation = new Text();
         userInformation.setFont(Font.font("Verdana", 12));
         userInformation.setTranslateX(150);
-        userInformation.setTranslateY(30);
+        userInformation.setTranslateY(110);
 
         Buttons[0] = new managerButton("Retrieve Member", 0, this);
+        Buttons[0].setTranslateX(150);
+        Buttons[0].setTranslateY(-50);
         Buttons[1] = new managerButton("Retrieve Provider", 1, this);
+        Buttons[1].setTranslateX(150);
+        Buttons[1].setTranslateY(20);
         Buttons[2] = new managerButton("Edit User", 2, this);
+        Buttons[2].setTranslateX(-150);
+        Buttons[2].setTranslateY(-130);
         Buttons[3] = new managerButton("Delete User", 3, this);
+        Buttons[3].setTranslateX(-150);
+        Buttons[3].setTranslateY(-70);
         Buttons[4] = new managerButton("", 4, this); //this has variable text filled in by other methods
+        Buttons[4].setTranslateX(-150);
+        Buttons[4].setTranslateY(-10);
         Buttons[5] = new managerButton("New Member", 5, this);
+        Buttons[5].setTranslateX(-150);
+        Buttons[5].setTranslateY(50);
         Buttons[6] = new managerButton("New Provider", 6, this);
+        Buttons[6].setTranslateX(-150);
+        Buttons[6].setTranslateY(110);
         Buttons[7] = new managerButton("Print Reports", 7, this);
+        Buttons[7].setTranslateX(-150);
+        Buttons[7].setTranslateY(170);
         Buttons[8] = new managerButton("Logout", 8, this);
+        Buttons[8].setTranslateX(150);
+        Buttons[8].setTranslateY(200);
         Buttons[9] = new managerButton("Accept", 9, this);
+        Buttons[9].setTranslateX(-150);
+        Buttons[9].setTranslateY(200);
         Buttons[10] = new managerButton("Back", 10, this);
+        Buttons[10].setTranslateX(150);
+        Buttons[10].setTranslateY(200);
 
         for(int i = 0; i < 6; ++i){
             editFields[i] = new TextField();
+            editFields[i].setTranslateX(100);
+            editFields[i].setTranslateY(-150 + 60 * i);
+            editFields[i].setMaxSize(250, 30);
             editLabels[i] = new Text();
+            editLabels[i].setFont(Font.font("Verdana", 20));
+            editLabels[i].setTranslateX(-120);
+            editLabels[i].setTranslateY(-150 + 60 * i);
         }
+        editLabels[0].setText("ID:");
+        editLabels[1].setText("Name:");
+        editLabels[2].setText("Street:");
+        editLabels[3].setText("City:");
+        editLabels[4].setText("State:");
+        editLabels[5].setText("Zip:");
+
 
         managerNumberHeading = new Text();
         managerNumberHeading.setTranslateY(-200);
@@ -147,6 +182,7 @@ public class managerPane extends StackPane implements Serializable{
                 Buttons[4].setText("Remove Suspension");
             else
                 Buttons[4].setText("Suspend Member");
+            userInformation.setText(currentMember.returnInfo()); //update this accordingly
         }
     }
 
@@ -169,9 +205,11 @@ public class managerPane extends StackPane implements Serializable{
     public void removeUser(){ //remove a user from the data structure.
         if(currentMember != null) {
             userHashTable.Remove(currentMember.getUserNumber(), 1);
+            currentMember = null;
         }
         else if(currentProvider != null) {
             userHashTable.Remove(currentProvider.getUserNumber(), 2);
+            currentProvider = null;
         }
         userInformation.setText("User Removed.");
         addUserButtons();
@@ -203,23 +241,23 @@ public class managerPane extends StackPane implements Serializable{
     //verifies info in editing/adding fields and--if it's valid--adds or edits it into the user data structure.
     public void parseEditingOrAddingInput(){
         boolean valid = true; //denotes the validity of user input contained in the fields.
-        if(editFields[1].getText().length() != 25){
+        if(editFields[1].getText().length() > 25){
             editFields[1].setText("This field must not exceed a length of 25.");
             valid = false;
         }
-        if(editFields[2].getText().length() != 25){
+        if(editFields[2].getText().length() > 25){
             editFields[2].setText("This field must not exceed a length 25.");
             valid = false;
         }
-        if(editFields[3].getText().length() != 14){
+        if(editFields[3].getText().length() > 14){
             editFields[3].setText("This field must not exceed a length of 14.");
             valid = false;
         }
-        if(editFields[4].getText().length() != 5){
+        if(editFields[4].getText().length() > 5){
             editFields[4].setText("This field must not exceed a length of 2.");
             valid = false;
         }
-        if(editFields[5].getText().length() != 5 || !isNumber(editFields[5].getText())){
+        if(editFields[5].getText().length() > 5 || !isNumber(editFields[5].getText())){
             editFields[5].setText("This field must contain a 5 digit number.");
             valid = false;
         }
@@ -283,8 +321,9 @@ public class managerPane extends StackPane implements Serializable{
         for(int i = 0; i < 6; ++i){
             getChildren().removeAll(editFields[i], editLabels[i]);
         }
-        managerNumberHeading.setText("Hello Manager #: " + currentManager.getUserNumber());
-        getChildren().addAll(Buttons[0], Buttons[1], Buttons[5], Buttons[6], Buttons[7], Buttons[8]);
+        managerNumberHeading.setText("Hello Manager #" + currentManager.getUserNumber());
+        buttonPane.getChildren().addAll(Buttons[0], Buttons[1], Buttons[5], Buttons[6], Buttons[7], Buttons[8]);
+        getChildren().addAll(userInformation, retrievalField);
         addUserButtons(); //additionally, add user buttons if we have a current member or provider.
     }
 
@@ -318,7 +357,7 @@ public class managerPane extends StackPane implements Serializable{
         private Text buttonText;
 
         public managerButton(String buttontext, int buttonFunction, managerPane Parent){
-            Rectangle buttonBackground = new Rectangle(100, 100);
+            Rectangle buttonBackground = new Rectangle(150, 50);
             buttonBackground.setFill(Color.CORNFLOWERBLUE);
             this.setOnMouseClicked(event -> {
                 if(buttonFunction == 0){
