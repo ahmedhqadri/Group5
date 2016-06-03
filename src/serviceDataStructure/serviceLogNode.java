@@ -75,6 +75,7 @@ public class serviceLogNode implements Serializable{
     public String returnStructureAsString(){
         if(Next == null)
             return returnAsString();
+        //test
         return returnAsString() + "\n\n" + Next.returnStructureAsString();
     }
 
