@@ -4,6 +4,9 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.Serializable;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 
 /**
@@ -80,7 +83,9 @@ public class weekListNode implements Serializable{
 
     //Print the accounting summary for the week's services
     public boolean printAccountSummary(){
-        File file = new File("Accounting_Summary_" + new Date() + ".txt");
+        DateFormat DF = new SimpleDateFormat("MM.dd.yyyy");
+        Calendar calendar = Calendar.getInstance();
+        File file = new File("Accounting_Summary_" + DF.format(calendar.getTime()) + ".txt");
         FileWriter writer;
         serviceLogNode current = serviceHead;
         int numProvider = 0;
