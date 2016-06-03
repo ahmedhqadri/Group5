@@ -48,15 +48,19 @@ public class GUIRoot implements Serializable{
         primaryStage.setFullScreen(false); //ensure that the GUIRoot.GUIRoot is windowed.
         primaryStage.setResizable(false); //keep the GUIRoot.GUIRoot at a constant size for simplicity of element configuration.
 
-        //if(data == null) {
+        if(data == null) {
             userStructure = new userHashTable();
             userStructure.Test();
-        /*}
+        }
         else{
             userStructure = data.getUserHashTable();
             weekStructure = data.getWeeksHead();
             providerpane.setServiceList(data.getServices());
-        }*/
+            //TEST
+            System.out.println("Loading");
+            managerpane.printWeeklyReports();
+            //TEST
+        }
 
         primaryStage.setScene(GUIScene); //assign the scene to the primary stage object.
         primaryStage.show(); //display the GUIRoot.GUIRoot on the user's computer.

@@ -8,6 +8,9 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.Serializable;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 
 /**
@@ -122,7 +125,10 @@ public class memberNode extends userNode implements Serializable{
         }
         //generate the week's report
         if(record != null && record.getWeekNum() == weekNumber) {
-            File file = new File(memberName + "_" + new Date() + ".txt");
+            DateFormat DF = new SimpleDateFormat("MM.dd.yyyy");
+            Calendar calendar = Calendar.getInstance();
+
+            File file = new File(memberName + "_" + DF.format(calendar.getTime()) + ".txt");
             FileWriter writer;
             try {
                 if(file.createNewFile()) {
@@ -144,6 +150,7 @@ public class memberNode extends userNode implements Serializable{
                     System.out.println("Failed to create " + memberName + "'s report file!");
             } catch (IOException e) {
                 System.out.println("Failed to create " + memberName + "'s report file!");
+                System.out.println(e.getMessage());
             }
         }
         return false;

@@ -8,6 +8,9 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.Serializable;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 
 /**
@@ -126,7 +129,10 @@ public class providerNode extends userNode implements Serializable{
         }
         //generate the week's report
         if(record != null && record.getWeekNum() == weekNumber) {
-            File file = new File(providerName + "_" + new Date() + ".txt");
+            DateFormat DF = new SimpleDateFormat("MM.dd.yyyy");
+            Calendar calendar = Calendar.getInstance();
+
+            File file = new File(providerName + "_" + DF.format(calendar.getTime()) + ".txt");
             FileWriter writer;
             weeklyConsultations = 0; // reset totals
             weeklyFee = 0.0f;
@@ -166,7 +172,10 @@ public class providerNode extends userNode implements Serializable{
             return false;
 
         //print the EFT data
-        File file = new File(providerName + "_EFT_" + new Date() + ".txt");
+        DateFormat DF = new SimpleDateFormat("MM.dd.yyyy");
+        Calendar calendar = Calendar.getInstance();
+
+        File file = new File(providerName + "_EFT_" + DF.format(calendar.getTime()) + ".txt");
         FileWriter writer;
         try {
             if(file.createNewFile()) {

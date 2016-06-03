@@ -18,6 +18,9 @@ public class userHashTable implements Serializable{
     }
 
     public static void Insert(userNode toInsert){
+        //TEST
+        System.out.println(toInsert.getUserNumber() + " inserted.");
+        //TEST
         int hashedElement = toInsert.getUserNumber()%Size;
         if(Users[hashedElement] == null){
             Users[hashedElement] = toInsert;
