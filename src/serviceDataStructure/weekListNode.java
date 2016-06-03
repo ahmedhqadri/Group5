@@ -26,7 +26,10 @@ public class weekListNode implements Serializable{
     public weekListNode(weekListNode next){
         Next = next;
         startDate = new Date();
-        weekNum = next.weekNum + 1;
+        if(next == null)
+            weekNum = 1;
+        else
+            weekNum = next.weekNum + 1;
     }
 
     //returns a boolean denoting whether or not a week has elapsed since the initialization of the object

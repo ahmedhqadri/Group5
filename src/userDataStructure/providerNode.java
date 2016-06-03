@@ -44,6 +44,8 @@ public class providerNode extends userNode implements Serializable{
     }
 
     public void addService(serviceLogNode toInsert){
+        if (Head == null)
+            Head = new servicesInfoList();
         Head.AddNode(toInsert);
     }
 

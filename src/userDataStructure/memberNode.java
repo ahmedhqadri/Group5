@@ -39,6 +39,8 @@ public class memberNode extends userNode implements Serializable{
     }
 
     public void addService(serviceLogNode toInsert){
+        if (Head == null)
+            Head = new servicesInfoList();
         Head.AddNode(toInsert);
     }
 
