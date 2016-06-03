@@ -15,20 +15,20 @@ import java.util.Date;
 public class weekListNode implements Serializable{
     private weekListNode Next; //connection to the next element in the list
     //private DateFormat startDateFormat; //formatting class for date storage
-    private Date startDate; //class for date storage
+    private Calendar startDate; //class for date storage
     private serviceLogNode serviceHead; //head of service substructure; stores service transactions throughout given week
     private int weekNum; //week's number
 
     public weekListNode(){
         Next = null;
-        startDate = new Date();
+        startDate = Calendar.getInstance();
         weekNum = 1;
         //startDateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
     }
 
     public weekListNode(weekListNode next){
         Next = next;
-        startDate = new Date();
+        startDate = Calendar.getInstance();
         if(next == null)
             weekNum = 1;
         else
@@ -37,9 +37,9 @@ public class weekListNode implements Serializable{
 
     //returns a boolean denoting whether or not a week has elapsed since the initialization of the object
     //that this method is called from.
-    public boolean isOfCurrentWeek(String obj){
-        Date currentDate = new Date();
-        return currentDate.getHours() < 168 + startDate.getHours();
+    public boolean isOfCurrentWeek(){
+        Calendar currentDate = Calendar.getInstance();
+        return currentDate.get(Calendar.HOUR_OF_DAY) < 168 + startDate.get(Calendar.HOUR_OF_DAY);
     }
 
     //adds a new service at the head of the service substructure.
