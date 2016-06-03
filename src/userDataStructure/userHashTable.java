@@ -10,40 +10,39 @@ import java.io.Serializable;
  */
 public class userHashTable implements Serializable{
     //a class for storing information pertaining to members' accounts; extends Java Hashtable class.
-    private static int Size = 100;
-    private static userNode[] Users;
+    private int Size = 100;
+    private userNode[] Users;
+    private static userHashTable Primary;
 
     public userHashTable(){
         Users = new userNode[Size];
+        Primary = this;
     }
 
     public static void Insert(userNode toInsert){
-        //TEST
-        System.out.println(toInsert.getUserNumber() + " inserted.");
-        //TEST
-        int hashedElement = toInsert.getUserNumber()%Size;
-        if(Users[hashedElement] == null){
-            Users[hashedElement] = toInsert;
+        int hashedElement = toInsert.getUserNumber()%Primary.Size;
+        if(Primary.Users[hashedElement] == null){
+            Primary.Users[hashedElement] = toInsert;
         }
         else{
-            toInsert.setNext(Users[hashedElement]);
-            Users[hashedElement] = toInsert;
+            toInsert.setNext(Primary.Users[hashedElement]);
+            Primary.Users[hashedElement] = toInsert;
         }
     }
 
     public static userNode Retrieve(int toRetrieve, int typeToRetrieve){
-        if(Users[toRetrieve%Size] == null){
+        if(Primary.Users[toRetrieve%Primary.Size] == null){
             return null;
         }
         else {
-            return Users[toRetrieve % Size].Retrieve(toRetrieve, typeToRetrieve);
+            return Primary.Users[toRetrieve % Primary.Size].Retrieve(toRetrieve, typeToRetrieve);
         }
     }
 
     public static void Remove(int toRemove, int category){
-        int hashedElement = toRemove%Size;
-        if(Users[hashedElement] != null)
-           Users[hashedElement] = Users[hashedElement].Remove(toRemove, category);
+        int hashedElement = toRemove%Primary.Size;
+        if(Primary.Users[hashedElement] != null)
+           Primary.Users[hashedElement] = Primary.Users[hashedElement].Remove(toRemove, category);
     }
 
     public void Test(){
@@ -52,5 +51,9 @@ public class userHashTable implements Serializable{
         Insert(new managerNode(987654321));
         Insert(new memberNode(123456789, "John Smith", "1111 Test Ave.", "Testland", "OR", "97229"));
         Insert(new memberNode(111111111));
+    }
+
+    public void setPrimary(userHashTable primary){
+        Primary = primary;
     }
 }

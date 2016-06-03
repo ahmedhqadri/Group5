@@ -54,11 +54,14 @@ public class GUIRoot implements Serializable{
         }
         else{
             userStructure = data.getUserHashTable();
+            userStructure.setPrimary(data.getUserHashTable());
+            userHashTable.Insert(new providerNode(987654321));
+
+
             weekStructure = data.getWeeksHead();
             providerpane.setServiceList(data.getServices());
             //TEST
             System.out.println("Loading");
-            managerpane.printWeeklyReports();
             //TEST
         }
 
