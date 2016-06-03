@@ -53,10 +53,19 @@ public class serviceLogNode implements Serializable{
     public String memberData(){
         return
                 "Date of Service: " + manualDate
-                    + "\nProvider: " + Provider.getUserNumber()
+                    + "\nProvider: " + Provider.getName()
                     + "\nService: " + Service.getName();
     }
-
+    //returns the data needed for the provider report
+    public String providerData(){
+        return
+                "Date logged: " + entryDate.toString()
+                        + "\nDate of Service: " + manualDate
+                        + "\nMember: " + Member.getName()
+                        + "\nMember ID: " + Member.getUserNumber()
+                        + "\nService Code: " + Service.getID()
+                        + "\nService Fee: " + Service.getCost();
+    }
     //returns the amount to be paid to the provider for the service
     public float providerFee(){
         return Service.getFee();

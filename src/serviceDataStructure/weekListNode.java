@@ -93,7 +93,8 @@ public class weekListNode implements Serializable{
                     current.getProvider().generateWeeklyTotals(weekNum);
                     writer.write("Provider: " +current.getProvider().getName());
                     writer.write("\nConsultations: " + current.getProvider().getWeeklyConsultations());
-                    writer.write("\nFee: $" + current.getProvider().getWeeklyFee() + "\n");
+                    writer.write("\nFee: $" + current.getProvider().getWeeklyFee()
+                            + "\n-----------------------\n");
                     totalFee += current.getProvider().getWeeklyFee();
                     numConsultations += current.getProvider().getWeeklyConsultations();
                     ++numProvider;

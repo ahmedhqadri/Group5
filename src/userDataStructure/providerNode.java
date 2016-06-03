@@ -47,6 +47,7 @@ public class providerNode extends userNode implements Serializable{
         if (Head == null)
             Head = new servicesInfoList();
         Head.AddNode(toInsert);
+        ++totalConsultations;
     }
 
     public void setName(String toName){
@@ -103,11 +104,10 @@ public class providerNode extends userNode implements Serializable{
 
     @Override
     public String returnInfo(){
-        return "Member Name: " + providerName
+        return "Provider Name: " + providerName
                 +"\nMember ID: " + getUserNumber()
                 +"\nMember Address:\n" + providerStreet
-                +"\n" + providerCity + ", " + providerState + " " + providerZip
-                +"\nTotal Consultations: " + totalConsultations;
+                +"\n" + providerCity + ", " + providerState + " " + providerZip;
     }
 
     //Print the provider report for the specific week number
@@ -135,7 +135,7 @@ public class providerNode extends userNode implements Serializable{
                     writer = new FileWriter(file);
                     writer.write(returnInfo()); //header info
                     while (record != null && record.getWeekNum() == weekNumber) {
-                        writer.write("\n" + record.returnAsString()); //per service info
+                        writer.write("\n------------------\n" + record.providerData()); //per service info
                         weeklyFee += record.providerFee();
                         ++weeklyConsultations;
                         current = current.getNext();
@@ -144,7 +144,7 @@ public class providerNode extends userNode implements Serializable{
                         else
                             record = null;
                     }
-                    writer.write("\nTotal Number Consultations: " + weeklyConsultations);
+                    writer.write("\n====================\nTotal Number Consultations: " + weeklyConsultations);
                     writer.write("\nTotal Fee: $" + weeklyFee);
                     writer.flush();
                     writer.close();

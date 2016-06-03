@@ -129,7 +129,7 @@ public class memberNode extends userNode implements Serializable{
                     writer = new FileWriter(file);
                     writer.write(returnInfo());
                     while (record != null && record.getWeekNum() == weekNumber) {
-                        writer.write("\n" + record.memberData());
+                        writer.write("\n-------------------\n" + record.memberData());
                         current = current.getNext();
                         if (current != null)
                             record = current.getRecords();
