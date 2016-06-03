@@ -37,7 +37,7 @@ public class weekListNode implements Serializable{
 
     //returns a boolean denoting whether or not a week has elapsed since the initialization of the object
     //that this method is called from.
-    public boolean isOfCurrentWeek(){
+    public boolean isOfCurrentWeek(String obj){
         Date currentDate = new Date();
         return currentDate.getHours() < 168 + startDate.getHours();
     }
@@ -117,5 +117,9 @@ public class weekListNode implements Serializable{
             System.out.println("Failed to create account summary report file!");
         }
         return false;
+    }
+
+    public int getWeekNum(){
+        return weekNum;
     }
 }
