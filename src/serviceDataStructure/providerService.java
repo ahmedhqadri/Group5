@@ -66,8 +66,8 @@ public class providerService implements Serializable {
         return serviceID + "";
     }
 
-    public String getCost(){
-        return "$" + serviceCost;
-    }
+    public String getCost(){return "$" + serviceCost;}
+
+    public float getFee(){return serviceCost;}
 }
 

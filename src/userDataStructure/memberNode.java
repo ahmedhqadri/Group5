@@ -2,8 +2,13 @@ package userDataStructure;
 
 import serviceDataStructure.serviceLogNode;
 import serviceDataStructure.servicesInfoList;
+import serviceDataStructure.servicesInfoNode;
 
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.io.Serializable;
+import java.util.Date;
 
 /**
  * Created by Spaghetti on 4/25/2016.
@@ -97,5 +102,48 @@ public class memberNode extends userNode implements Serializable{
     @Override
     public int getUserCategory() { //returns the user's category as an int.
         return 1;
+    }
+
+    //Print the member report for the specific week number
+    public boolean printReport(int weekNumber){
+        if (Head == null || weekNumber > Head.getHead().getRecords().getWeekNum())
+            return false;
+
+        servicesInfoNode current = Head.getHead();
+        serviceLogNode record = current.getRecords();
+        while(record != null && record.getWeekNum() >  weekNumber) {
+            current = current.getNext();
+            if(current != null)
+                record = current.getRecords();
+            else
+                record = null;
+        }
+        //generate the week's report
+        if(record != null && record.getWeekNum() == weekNumber) {
+            File file = new File(memberName + "_" + new Date() + ".txt");
+            FileWriter writer;
+            try {
+                if(file.createNewFile()) {
+                    writer = new FileWriter(file);
+                    writer.write(returnInfo());
+                    while (record != null && record.getWeekNum() == weekNumber) {
+                        writer.write("\n" + record.memberData());
+                        current = current.getNext();
+                        if (current != null)
+                            record = current.getRecords();
+                        else
+                            record = null;
+                    }
+                    writer.flush();
+                    writer.close();
+                    return true;
+                }
+                else
+                    System.out.println("Failed to create " + memberName + "'s report file!");
+            } catch (IOException e) {
+                System.out.println("Failed to create " + memberName + "'s report file!");
+            }
+        }
+        return false;
     }
 }

@@ -15,6 +15,8 @@ import userDataStructure.managerNode;
 import userDataStructure.memberNode;
 import userDataStructure.providerNode;
 import userDataStructure.userHashTable;
+import serviceDataStructure.weekListNode;
+import GUI.GUIRoot;
 
 import java.io.Serializable;
 
@@ -232,10 +234,12 @@ public class managerPane extends StackPane implements Serializable{
         }
     }
 
-    //NOT YET IMPLEMENTED
     //Prints reports for this week for individual users and the overarching manager report.
     public void printWeeklyReports(){
-
+        weekListNode serviceWeek = GUIRoot.getWeekStructure(); //get most recent week to print
+        if(serviceWeek != null){
+            serviceWeek.printWeeklyReport();
+        }
     }
 
     //verifies info in editing/adding fields and--if it's valid--adds or edits it into the user data structure.

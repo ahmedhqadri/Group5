@@ -24,4 +24,8 @@ public class servicesInfoList implements Serializable {
             head = temp;
         }
     }
+
+    public servicesInfoNode getHead() {
+        return head;
+    }
 }
