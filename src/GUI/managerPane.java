@@ -270,23 +270,23 @@ public class managerPane extends StackPane implements Serializable{
     //verifies info in editing/adding fields and--if it's valid--adds or edits it into the user data structure.
     public void parseEditingOrAddingInput(){
         boolean valid = true; //denotes the validity of user input contained in the fields.
-        if(editFields[1].getText().length() > 25){
-            editFields[1].setText("This field must not exceed a length of 25.");
+        if(editFields[1].getText().length() > 25 || editFields[1].getText().length() < 1){
+            editFields[1].setText("This field must contain between 1 and 25 characters.");
             valid = false;
         }
-        if(editFields[2].getText().length() > 25){
-            editFields[2].setText("This field must not exceed a length of 25.");
+        if(editFields[2].getText().length() > 25 || editFields[2].getText().length() < 1){
+            editFields[2].setText("This field must contain between 1 and 25 characters.");
             valid = false;
         }
-        if(editFields[3].getText().length() > 14){
-            editFields[3].setText("This field must not exceed a length of 14.");
+        if(editFields[3].getText().length() > 14 || editFields[3].getText().length() < 1){
+            editFields[3].setText("This field must contain between 1 and 14 characters.");
             valid = false;
         }
-        if(editFields[4].getText().length() > 5){
-            editFields[4].setText("This field must not exceed a length of 2.");
+        if(editFields[4].getText().length() != 2){
+            editFields[4].setText("This field must contain a 2 letter state code.");
             valid = false;
         }
-        if(editFields[5].getText().length() > 5 || !isNumber(editFields[5].getText())){
+        if(editFields[5].getText().length() != 5 || !isNumber(editFields[5].getText())){
             editFields[5].setText("This field must contain a 5 digit number.");
             valid = false;
         }
@@ -342,6 +342,7 @@ public class managerPane extends StackPane implements Serializable{
             }
             else{ //invalid user number
                 editFields[0].setText("Please enter a new 9 digit number.");
+                valid = false;
             }
         }
         if(valid)
