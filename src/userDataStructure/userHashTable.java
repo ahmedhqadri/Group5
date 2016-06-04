@@ -8,6 +8,7 @@ import java.io.Serializable;
 /**
  * Created by Spaghetti on 4/4/2016.
  */
+//the principle data structure for retrieving users; used in logins and member verification, mostly.
 public class userHashTable implements Serializable{
     //a class for storing information pertaining to members' accounts; extends Java Hashtable class.
     private int Size = 100;

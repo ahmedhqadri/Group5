@@ -12,6 +12,7 @@ import java.util.Date;
 /**
  * Created by Spaghetti on 4/25/2016.
  */
+//a LLL node class that represents a week of services. Contains a secondary LLL containing the actual services.
 public class weekListNode implements Serializable{
     private weekListNode Next; //connection to the next element in the list
     //private DateFormat startDateFormat; //formatting class for date storage

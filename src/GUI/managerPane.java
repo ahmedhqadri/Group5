@@ -25,6 +25,7 @@ import java.io.Serializable;
 /**
  * Created by Spaghetti on 5/2/2016.
  */
+//class containing GUI elements pertinent to managers' use of the system.
 public class managerPane extends StackPane implements Serializable{
     private providerNode currentProvider; //a provider node that we're interacting with
     private memberNode currentMember; //a member node that we're interacting with
@@ -187,7 +188,7 @@ public class managerPane extends StackPane implements Serializable{
             editFields[5].setText(currentMember.getZip());
         }
         else {
-            managerNumberHeading.setText("Edit Provider");
+            managerNumberHeading.setText("Edit Provider #" + currentProvider.getUserNumber());
             editFields[1].setText(currentProvider.getName());
             editFields[2].setText(currentProvider.getStreet());
             editFields[3].setText(currentProvider.getCity());
@@ -364,6 +365,7 @@ public class managerPane extends StackPane implements Serializable{
         GUIRoot.swapToLoginPane();
     }
 
+    //print an individual report for a specified user.
     public void printIndividualReport(){
         if(GUIRoot.getWeekStructure() != null) {
             if (currentProvider != null)
@@ -373,6 +375,7 @@ public class managerPane extends StackPane implements Serializable{
         }
     }
 
+    //checks to make sure that the passed string contains strictly numeric characters.
     public boolean isNumber(String toParse){
         for(int i = 0; i < toParse.length(); ++i){
             if(!Character.isDigit(toParse.charAt(i)))

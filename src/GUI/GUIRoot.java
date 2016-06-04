@@ -15,6 +15,7 @@ import java.io.Serializable;
 /**
  * Created by Spaghetti on 4/4/2016.
  */
+//Contains references to a few key GUI elements and important data structures that they interact with.
 public class GUIRoot implements Serializable{
     //a class representing the heft of the program's graphical user interface elements
 
@@ -55,13 +56,11 @@ public class GUIRoot implements Serializable{
         else{
             userStructure = data.getUserHashTable();
             userStructure.setPrimary(data.getUserHashTable());
-            userHashTable.Insert(new providerNode(987654321));
-
 
             weekStructure = data.getWeeksHead();
             providerpane.setServiceList(data.getServices());
             //TEST
-            System.out.println("Loading");
+            System.out.println("Loading data from previous session.");
             //TEST
         }
 
