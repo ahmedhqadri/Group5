@@ -52,6 +52,7 @@ public class GUIRoot implements Serializable{
         if(data == null) {
             userStructure = new userHashTable();
             userStructure.Test();
+            weekStructure = weekListNode.Test();
         }
         else{
             userStructure = data.getUserHashTable();

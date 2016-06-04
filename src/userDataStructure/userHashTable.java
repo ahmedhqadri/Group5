@@ -48,10 +48,11 @@ public class userHashTable implements Serializable{
 
     public void Test(){
         Insert(new managerNode(123456789));
-        Insert(new providerNode(987654321));
-        Insert(new managerNode(987654321));
+        Insert(new providerNode(222222222, "Albert King", "1234 3rd NE Ave.", "Testville", "CA", "12345"));
+        Insert(new providerNode(987654321, "Stephen Jones", "11111 Riverside St.", "Innawoods", "WA", "33333"));
         Insert(new memberNode(123456789, "John Smith", "1111 Test Ave.", "Testland", "OR", "97229"));
-        Insert(new memberNode(111111111));
+        Insert(new memberNode(111111111, "Alex Arnoult", "43122 Doot St.", "Corpus Christi", "TX", "22222"));
+        Insert(new memberNode(123454321, "Steve James", "6432 SW Sleepy Ave.", "Atlanta", "GA", "12321"));
     }
 
     public void setPrimary(userHashTable primary){

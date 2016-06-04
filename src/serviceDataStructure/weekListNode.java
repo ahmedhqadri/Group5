@@ -1,5 +1,10 @@
 package serviceDataStructure;
 
+import GUI.GUIRoot;
+import userDataStructure.memberNode;
+import userDataStructure.providerNode;
+import userDataStructure.userHashTable;
+
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -118,6 +123,39 @@ public class weekListNode implements Serializable{
             System.out.println("Failed to create account summary report file!");
         }
         return false;
+    }
+
+    //test method; returns a scripted set of service data
+    public static weekListNode Test(){
+        weekListNode toReturn = new weekListNode();
+        memberNode testmember = (memberNode)userHashTable.Retrieve(123454321, 1);
+        providerNode testprovider = (providerNode)userHashTable.Retrieve(987654321, 2);
+        if(testmember != null && testprovider != null) {
+            serviceLogNode testlog = new serviceLogNode(
+                    testprovider, testmember, "05-05-2016",
+                    GUIRoot.getProviderPane().getServiceList()[1], "It was okay I guess."
+            );
+            toReturn.addService(testlog);
+        }
+        testmember = (memberNode)userHashTable.Retrieve(123456789, 1);
+        if(testmember != null && testprovider != null) {
+            serviceLogNode testlog = new serviceLogNode(
+                    testprovider, testmember, "04-04-2016",
+                    GUIRoot.getProviderPane().getServiceList()[2], "This was just great."
+            );
+            toReturn.addService(testlog);
+        }
+        testmember = (memberNode)userHashTable.Retrieve(111111111, 1);
+        testprovider = (providerNode)userHashTable.Retrieve(222222222, 2);
+        if(testmember != null && testprovider != null) {
+            serviceLogNode testlog = new serviceLogNode(
+                    testprovider, testmember, "03-03-2016",
+                    GUIRoot.getProviderPane().getServiceList()[3], "I have no idea what I'm doing."
+            );
+            toReturn.addService(testlog);
+        }
+
+        return toReturn;
     }
 
     public int getWeekNum(){
