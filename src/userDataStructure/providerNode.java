@@ -137,28 +137,25 @@ public class providerNode extends userNode implements Serializable{
             weeklyConsultations = 0; // reset totals
             weeklyFee = 0.0f;
             try {
-                if(file.createNewFile()) {
-                    writer = new FileWriter(file);
-                    writer.write(returnInfo()); //header info
-                    while (record != null && record.getWeekNum() == weekNumber) {
-                        writer.write("\n------------------\n" + record.providerData()); //per service info
-                        weeklyFee += record.providerFee();
-                        ++weeklyConsultations;
-                        current = current.getNext();
-                        if (current != null)
-                            record = current.getRecords();
-                        else
-                            record = null;
-                    }
-                    writer.write("\n====================\nTotal Number Consultations: " + weeklyConsultations);
-                    writer.write("\nTotal Fee: $" + weeklyFee);
-                    writer.flush();
-                    writer.close();
-                    lastWeeklyNum = weekNumber; //successfully updated weekly data for this week
-                    return true;
+                file.createNewFile();
+                writer = new FileWriter(file);
+                writer.write(returnInfo()); //header info
+                while (record != null && record.getWeekNum() == weekNumber) {
+                    writer.write("\n------------------\n" + record.providerData()); //per service info
+                    weeklyFee += record.providerFee();
+                    ++weeklyConsultations;
+                    current = current.getNext();
+                    if (current != null)
+                        record = current.getRecords();
+                    else
+                        record = null;
                 }
-                else
-                    System.out.println("Failed to create " + providerName + "'s report file!");
+                writer.write("\n====================\nTotal Number Consultations: " + weeklyConsultations);
+                writer.write("\nTotal Fee: $" + weeklyFee);
+                writer.flush();
+                writer.close();
+                lastWeeklyNum = weekNumber; //successfully updated weekly data for this week
+                return true;
             } catch (IOException e) {
                 System.out.println("Failed to create " + providerName + "'s report file!");
             }
@@ -178,17 +175,14 @@ public class providerNode extends userNode implements Serializable{
         File file = new File(providerName + "_EFT_" + DF.format(calendar.getTime()) + ".txt");
         FileWriter writer;
         try {
-            if(file.createNewFile()) {
-                writer = new FileWriter(file);
-                writer.write("Provider: " + providerName);
-                writer.write("\nProvider Number:" + getUserNumber());
-                writer.write("\nTotal Amount: $" + weeklyFee);
-                writer.flush();
-                writer.close();
-                return true;
-            }
-            else
-                System.out.println("Failed to create " + providerName + "'s EFT file!");
+            file.createNewFile();
+            writer = new FileWriter(file);
+            writer.write("Provider: " + providerName);
+            writer.write("\nProvider Number:" + getUserNumber());
+            writer.write("\nTotal Amount: $" + weeklyFee);
+            writer.flush();
+            writer.close();
+            return true;
         } catch (IOException e) {
             System.out.println("Failed to create " + providerName + "'s EFT file!");
         }

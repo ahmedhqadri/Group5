@@ -131,23 +131,20 @@ public class memberNode extends userNode implements Serializable{
             File file = new File(memberName + "_" + DF.format(calendar.getTime()) + ".txt");
             FileWriter writer;
             try {
-                if(file.createNewFile()) {
-                    writer = new FileWriter(file);
-                    writer.write(returnInfo());
-                    while (record != null && record.getWeekNum() == weekNumber) {
-                        writer.write("\n-------------------\n" + record.memberData());
-                        current = current.getNext();
-                        if (current != null)
-                            record = current.getRecords();
-                        else
-                            record = null;
-                    }
-                    writer.flush();
-                    writer.close();
-                    return true;
+                file.createNewFile();
+                writer = new FileWriter(file);
+                writer.write(returnInfo());
+                while (record != null && record.getWeekNum() == weekNumber) {
+                    writer.write("\n-------------------\n" + record.memberData());
+                    current = current.getNext();
+                    if (current != null)
+                        record = current.getRecords();
+                    else
+                        record = null;
                 }
-                else
-                    System.out.println("Failed to create " + memberName + "'s report file!");
+                writer.flush();
+                writer.close();
+                return true;
             } catch (IOException e) {
                 System.out.println("Failed to create " + memberName + "'s report file!");
                 System.out.println(e.getMessage());

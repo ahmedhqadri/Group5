@@ -98,27 +98,25 @@ public class weekListNode implements Serializable{
         int numConsultations = 0;
         float totalFee = 0.0f;
         try {
-            if (file.createNewFile()) {
-                writer = new FileWriter(file);
-                while (current != null) {
-                    current.getProvider().generateWeeklyTotals(weekNum);
-                    writer.write("Provider: " +current.getProvider().getName());
-                    writer.write("\nConsultations: " + current.getProvider().getWeeklyConsultations());
-                    writer.write("\nFee: $" + current.getProvider().getWeeklyFee()
-                            + "\n-----------------------\n");
-                    totalFee += current.getProvider().getWeeklyFee();
-                    numConsultations += current.getProvider().getWeeklyConsultations();
-                    ++numProvider;
-                    current = current.getNextProvider();
-                }
-                writer.write("Total Number Providers: " + numProvider);
-                writer.write("\nTotal Number Consultations: " + numConsultations);
-                writer.write("\nTotal Fee: $" + totalFee);
-                writer.flush();
-                writer.close();
-                return true;
-            } else
-                System.out.println("Failed to create account summary report file!");
+            file.createNewFile();
+            writer = new FileWriter(file);
+            while (current != null) {
+                current.getProvider().generateWeeklyTotals(weekNum);
+                writer.write("Provider: " +current.getProvider().getName());
+                writer.write("\nConsultations: " + current.getProvider().getWeeklyConsultations());
+                writer.write("\nFee: $" + current.getProvider().getWeeklyFee()
+                        + "\n-----------------------\n");
+                totalFee += current.getProvider().getWeeklyFee();
+                numConsultations += current.getProvider().getWeeklyConsultations();
+                ++numProvider;
+                current = current.getNextProvider();
+            }
+            writer.write("Total Number Providers: " + numProvider);
+            writer.write("\nTotal Number Consultations: " + numConsultations);
+            writer.write("\nTotal Fee: $" + totalFee);
+            writer.flush();
+            writer.close();
+            return true;
         } catch (IOException e) {
             System.out.println("Failed to create account summary report file!");
         }
