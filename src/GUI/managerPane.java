@@ -2,6 +2,8 @@ package GUI;
 
 import javafx.geometry.Pos;
 import javafx.scene.control.TextField;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
@@ -28,13 +30,14 @@ public class managerPane extends StackPane implements Serializable{
     private memberNode currentMember; //a member node that we're interacting with
     private managerNode currentManager; //the manager that is presently logged in.
     private int newMemberorProvider; //1 denotes adding a new member; 2 denotes adding a new provider; 0 denotes neither
+    private boolean isBase; //whether we're on the base screen or not.
     private TextField retrievalField;
     private Text userInformation; //an information display for any user that the manager retrieves.
     private Text managerNumberHeading;
     private TextField [] editFields = new TextField[6];
     private Text [] editLabels = new Text[6];
     private GridPane buttonPane = new GridPane();
-    private managerButton [] Buttons = new managerButton[11]; //buttons for navigating this part of the GUI
+    private managerButton [] Buttons = new managerButton[12]; //buttons for navigating this part of the GUI
 
     public managerPane(){
         setAlignment(Pos.CENTER); //align all GUI elements in relation to the center.
@@ -93,6 +96,9 @@ public class managerPane extends StackPane implements Serializable{
         Buttons[10] = new managerButton("Back", 10, this);
         Buttons[10].setTranslateX(150);
         Buttons[10].setTranslateY(200);
+        Buttons[11] = new managerButton("Print User\n Report", 11, this);
+        Buttons[11].setTranslateX(0);
+        Buttons[11].setTranslateY(110);
 
         for(int i = 0; i < 6; ++i){
             editFields[i] = new TextField();
@@ -111,6 +117,21 @@ public class managerPane extends StackPane implements Serializable{
         editLabels[4].setText("State:");
         editLabels[5].setText("Zip:");
 
+        setOnKeyReleased(event ->{
+            if(event.getCode() == KeyCode.ENTER){
+                if(isBase){ //base screen case
+                    retrieveUser(1); //try and retrieve a member
+                    if(currentMember != null) {
+                        userInformation.setText(currentMember.returnInfo());
+                        addUserButtons();
+                    }
+                }
+                else{
+                    parseEditingOrAddingInput(); //parse the input on this screen
+                }
+                event.consume();
+            }
+        });
 
         managerNumberHeading = new Text();
         managerNumberHeading.setTranslateY(-200);
@@ -131,6 +152,7 @@ public class managerPane extends StackPane implements Serializable{
             userInformation.setText("Invalid ID.");
             currentMember = null;
             currentProvider = null;
+            return;
         }
         int number = Integer.parseInt(retrievalField.getText());
         if(type == 1){ //member case
@@ -150,9 +172,10 @@ public class managerPane extends StackPane implements Serializable{
     }
 
     public void swapToEditingMode(){
+        isBase = false;
         newMemberorProvider = 0;
         buttonPane.getChildren().removeAll(Buttons[0], Buttons[1], Buttons[2], Buttons[3], Buttons[4],
-                Buttons[5], Buttons[6], Buttons[7], Buttons[8]); //remove other buttons.
+                Buttons[5], Buttons[6], Buttons[7], Buttons[8], Buttons[11]); //remove other buttons.
         getChildren().removeAll(retrievalField, userInformation);
 
         if(currentMember != null) {
@@ -189,9 +212,10 @@ public class managerPane extends StackPane implements Serializable{
     }
 
     public void swapToUserAddingMode(int Type){
+        isBase = false;
         newMemberorProvider = Type;
         buttonPane.getChildren().removeAll(Buttons[0], Buttons[1], Buttons[2], Buttons[3], Buttons[4],
-                Buttons[5], Buttons[6], Buttons[7], Buttons[8]); //remove other buttons.
+                Buttons[5], Buttons[6], Buttons[7], Buttons[8], Buttons[11]); //remove other buttons.
         getChildren().removeAll(userInformation, retrievalField);
         if(Type == 1)
             managerNumberHeading.setText("New Member");
@@ -218,10 +242,10 @@ public class managerPane extends StackPane implements Serializable{
     }
 
     public void addUserButtons(){//add visible buttons to the UI for user object interaction
-        buttonPane.getChildren().removeAll(Buttons[2], Buttons[3], Buttons[4]); //remove any extant copies of these;
-                                                                                // duplicates cause errors.
+        buttonPane.getChildren().removeAll(Buttons[2], Buttons[3], Buttons[4], Buttons[11]);
+        //remove any extant copies of these; duplicates cause errors.
         if(currentMember != null){
-            buttonPane.getChildren().addAll(Buttons[2], Buttons[3], Buttons[4]);
+            buttonPane.getChildren().addAll(Buttons[2], Buttons[3], Buttons[4], Buttons[11]);
             if(currentMember.isSuspended())
                 Buttons[4].setText("Remove Suspension");
             else
@@ -229,7 +253,7 @@ public class managerPane extends StackPane implements Serializable{
             userInformation.setText(currentMember.returnInfo());
         }
         else if(currentProvider != null){
-            buttonPane.getChildren().addAll(Buttons[2], Buttons[3]);
+            buttonPane.getChildren().addAll(Buttons[2], Buttons[3], Buttons[11]);
             userInformation.setText(currentProvider.returnInfo());
         }
     }
@@ -250,7 +274,7 @@ public class managerPane extends StackPane implements Serializable{
             valid = false;
         }
         if(editFields[2].getText().length() > 25){
-            editFields[2].setText("This field must not exceed a length 25.");
+            editFields[2].setText("This field must not exceed a length of 25.");
             valid = false;
         }
         if(editFields[3].getText().length() > 14){
@@ -297,6 +321,8 @@ public class managerPane extends StackPane implements Serializable{
                                     editFields[4].getText(),
                                     editFields[5].getText());
                     userHashTable.Insert(currentMember);
+                    currentProvider = null;
+                    userInformation.setText(currentMember.returnInfo());
                     addUserButtons();
                 }
                 else if(newMemberorProvider == 2 && valid){ //new provider case.
@@ -308,6 +334,8 @@ public class managerPane extends StackPane implements Serializable{
                                     editFields[4].getText(),
                                     editFields[5].getText());
                     userHashTable.Insert(currentProvider);
+                    currentMember = null;
+                    userInformation.setText(currentProvider.returnInfo());
                     addUserButtons();
                 }
             }
@@ -320,6 +348,7 @@ public class managerPane extends StackPane implements Serializable{
     }
 
     public void returnToBaseMode(){
+        isBase = true;
         newMemberorProvider = 0; //denote that we aren't adding either of these.
         buttonPane.getChildren().removeAll(Buttons[9], Buttons[10]);
         for(int i = 0; i < 6; ++i){
@@ -333,6 +362,15 @@ public class managerPane extends StackPane implements Serializable{
 
     public void Logout(){
         GUIRoot.swapToLoginPane();
+    }
+
+    public void printIndividualReport(){
+        if(GUIRoot.getWeekStructure() != null) {
+            if (currentProvider != null)
+                currentProvider.printReport(GUIRoot.getWeekStructure().getWeekNum());
+            if (currentMember != null)
+                currentMember.printReport(GUIRoot.getWeekStructure().getWeekNum());
+        }
     }
 
     public boolean isNumber(String toParse){
@@ -356,12 +394,17 @@ public class managerPane extends StackPane implements Serializable{
     8 -> Log Out
     9 -> Back from new member/provider/edit user menu
     10 -> Accept new member/provider/edited user
+    11 -> Print individual report
      */
     private class managerButton extends StackPane{
         private Text buttonText;
 
         public managerButton(String buttontext, int buttonFunction, managerPane Parent){
             Rectangle buttonBackground = new Rectangle(150, 50);
+            if(buttonFunction == 11) {
+                buttonBackground.setHeight(100);
+                buttonBackground.setWidth(100);
+            }
             buttonBackground.setFill(Color.CORNFLOWERBLUE);
             this.setOnMouseClicked(event -> {
                 if(buttonFunction == 0){
@@ -398,6 +441,9 @@ public class managerPane extends StackPane implements Serializable{
                 }
                 else if(buttonFunction == 10){
                     Parent.returnToBaseMode();
+                }
+                else if(buttonFunction == 11){
+                    Parent.printIndividualReport();
                 }
             });
             getChildren().add(buttonBackground);

@@ -20,6 +20,7 @@ import serviceDataStructure.providerService;
 import serviceDataStructure.serviceLogNode;
 import userDataStructure.memberNode;
 import userDataStructure.providerNode;
+import userDataStructure.userHashTable;
 
 import java.io.Serializable;
 
@@ -274,12 +275,18 @@ public class providerPane extends StackPane {
             return;
         }
         currentMember = ((memberNode)
-                GUIRoot.getUserStructure().Retrieve(Integer.parseInt(memberAuthenticationField.getText()), 1));
+                userHashTable.Retrieve(Integer.parseInt(memberAuthenticationField.getText()), 1));
         //search the user hash table for a member node (indicated by int arg "1") matching the text in the field
         if(currentMember == null)
             memberInformation.setText("Member not found.");
-        else
-            memberInformation.setText(currentMember.returnInfo());
+        else {
+            if(currentMember.isSuspended()){
+                memberInformation.setText("Member suspended!");
+                currentMember = null;
+            }
+            else
+                memberInformation.setText(currentMember.returnInfo());
+        }
     }
 
     public void checkServiceInput(){
